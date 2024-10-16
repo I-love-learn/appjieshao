@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>超越仓APP介绍</title>
+  <script src="./asset/zip.js"></script>
+  <script src="./asset/docx.js"></script>
+
+  <style>
+    body {
+      background-color: #fff;
+    }
+
+    .main {
+      width: 1200px;
+      margin: 0 auto;
+    }
+
+    img {
+      vertical-align: middle;
+    }
+
+    .point {
+      cursor: pointer;
+    }
+
+    .btn {
+      color: #5596FF;
+    }
+
+    .btn+.btn {
+      margin-left: 10px;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .btn:active {
+      opacity: 1;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    dialog {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1000px;
+      height: 800px;
+    }
+
+    dialog::backdrop {
+      background: rgba(black, .5);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <div style="height: 627px;background: url('./asset/Slice\ 43.png') no-repeat;position: relative;">
+      <jk-button style="position: absolute;left: 130px;top: 350px;"></jk-button>
+    </div>
+    <img src="./asset/Slice 44.png" alt="">
+    <img src="./asset/Slice 45.png" alt="">
+    <img src="./asset/Slice 46.png" alt="">
+
+    <div style="display: flex; align-items: center;justify-content: space-between;flex-direction: column;">
+      <img src="./asset/logo_2.png" alt="" style="margin: 40px;">
+      <jk-button></jk-button>
+
+      <div style="margin: 30px 0  80px;color: #3298FD;font-size: 18px;">超越仓是一站式智能化数字工业品采购平台，提供一键下单，一键询价等专业企采服务，助力企业采购升级。
+      </div>
+    </div>
+  </div>
+
+  <div style="background-color: #3c3c3c;height: 62px;line-height: 62px;text-align: center;color: #999;">
+    <span>©江苏集控供应链管理有限公司     版权所有</span>
+    <span style="margin-left: 34px;">地址：徐州市贾汪区潘安湖恒盛智谷6-103</span>
+    <span class="btn point" style="margin-left: 10px;" onclick="openC(1)">用户协议</span>
+    <span class="btn point" onclick="openC(2)">隐私协议</span>
+    <span style="margin-left: 10px;" class="point"
+      onclick="window.open('https://beian.miit.gov.cn/#/Integrated/index')">备案号：苏ICP备18131456号</span>
+  </div>
+
+
+  <template id="template_button">
+    <img src="./asset/Group_7821.png" alt="">
+    <style>
+      img {
+        cursor: pointer;
+      }
+
+      img:hover {
+        opacity: 0.8;
+      }
+
+      img:active {
+        opacity: 1;
+        filter: drop-shadow(0px 0px 5px rgba(0, 0, 255, 0.5));
+      }
+    </style>
+  </template>
+
+  <dialog id="dialog" open>
+    <div id="docx1" style="height: 700px;overflow-y: scroll;"></div>
+
+    <div style="display: flex;justify-content: center;margin-top: 20px;">
+      <div
+        style="border-radius: 6px;background-color: #3298FD;color: #fff;padding: 10px 20px;width: 60px;text-align: center;"
+        class="btn point" onclick="dialog.style.display='none'">
+        关闭</div>
+    </div>
+  </dialog>
+
+  <script>
+
+    customElements.define(
+      // 元素名，必须是Kebab case命名
+      "jk-button",
+      // 定义类，需要继承自HTMLElement
+      class extends HTMLElement {
+        // 构造器
+        constructor() {
+          // 必须调用父级构造
+          super();
+
+          // 获取上一步定义的template模板
+          const template = document.getElementById("template_button");
+          // 获取模板内容
+          const templateContent = template.content;
+
+          // 获取本元素的影子DOM树根，mode为true表示以后可以通过JavaScript直接外部访问根节点
+          const shadowRoot = this.attachShadow({ mode: "open" });
+
+          // 将template的内容克隆并附加到shadowRoot,
+          shadowRoot.appendChild(
+            // true表示深拷贝
+            templateContent.cloneNode(true)
+          );
+        }
+      }
+    );
+  </script>
+</body>
+
+<script>
+  const dialog = document.getElementById("dialog");
+  const docx1 = document.getElementById("docx1");
+  dialog.close()
+  function openC(flag) {
+    fetch(flag === 1 ? './asset/超越仓平台服务协议20240820.docx' : './asset/超越仓平台隐私协议20240820.docx').then(res => {
+      console.log(res)
+      return res.blob()
+    }).then(res => {
+      docx.renderAsync(new Blob([res]), document.getElementById("docx1"))
+        .then(x => dialog.style.display = "block");
+    })
+  }
+</script>
+
+</html>
